@@ -4,11 +4,10 @@ import { priorityAddSchema, priorityByTrunkSchema, priorityDeleteSchema } from '
 import { PriorityController } from "../controllers/priorityControllers.js"
 
 import { mapTrunksToCache } from "../services/priorityServices.js";
+import cron from "node-cron"
+import { validateToken } from "../middlewares/validateToken.js";
 
 const priorityController = new PriorityController();
-
-// Mapeamento dos troncos e sua correspoondente prioridade na inicialização
-await mapTrunksToCache();
 
 /**
  *
@@ -17,9 +16,21 @@ await mapTrunksToCache();
  * 
 */
 
+// Mapeamento dos troncos e sua correspoondente prioridade na inicialização
+await mapTrunksToCache();
+
+
+// Atualizo a cada 10 e coloco no cache
+cron.schedule('* * * * *', async () => {
+    await mapTrunksToCache();
+});
+
 export const priorityRoutes = async (fastify) => {
     // Rota para criar setar uma nova prioridade
-    fastify.post('/api/v1/priority', { schema: priorityAddSchema }, async (request, reply) => {
+    fastify.post('/api/v1/priority', {
+        preHandler: validateToken,
+        schema: priorityAddSchema
+    }, async (request, reply) => {
         const { trunk, priority, start_date, end_date } = request.body;
 
         try {

@@ -30,13 +30,14 @@ export const formatData = (trunk_data) => {
 
 export const fetchTrunks = async () => {
     const trunks = await prisma.trunks.findMany();
-    logger.info("Troncos localizados.");
-    logger.info("Formatando resultados...");
+    logger.debug("Troncos localizados.");
+    logger.debug("Formatando resultados...");
 
     const tunks_formated = formatData(trunks)
-    logger.info("Resultados formatados.");
+    logger.debug("Resultados formatados.");
 
-    // logger.info(JSON.stringify(tunks_formated, null, 2));
+    // Descomente caso queira ver os dados retornados do db do asterisk.
+    // logger.debug(JSON.stringify(tunks_formated, null, 2));
 
     try {
         cache.set('trunks', tunks_formated);
@@ -49,7 +50,7 @@ export const fetchTrunks = async () => {
 }
 
 export const getTrunks = async () => {
-    logger.info("Buscando troncos...");
+    logger.debug("Buscando troncos...");
     const trunksCache = cache.get("trunks");
 
     if (!trunksCache) {

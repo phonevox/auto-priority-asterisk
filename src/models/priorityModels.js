@@ -22,7 +22,7 @@ export class PriorityModel {
                 throw new Error(`Tronco não encontrado.`);
             }
 
-            logger.info("Esse localizando, continuando...");
+            logger.debug("Tronco localizado, continuando...");
 
             // Upsert: se existir, atualiza; se não, cria
             const add_priority_query = await prisma.priorities_api.upsert({
@@ -42,7 +42,8 @@ export class PriorityModel {
                 }
             });
 
-            logger.info(`Prioridade adicionada ou atualizada com sucesso: ${JSON.stringify(add_priority_query, null, 2)}.`);
+            logger.info(`Prioridade adicionada ou atualizada com sucesso.`);
+            logger.debug(`Prioridade adicionada ou atualizada com sucesso: ${JSON.stringify(add_priority_query, null, 2)}.`);
             cache.del('priorities');
         } catch (error) {
             logger.error(`Ocorreu um erro ao buscar ou adicionar o tronco: ${error}.`);
@@ -54,7 +55,7 @@ export class PriorityModel {
         try {
             const get_all_priority_query = await prisma.priorities_api.findMany();
 
-            logger.info(`Prioridades localizadas: ${JSON.stringify(get_all_priority_query, null, 2)}.`);
+            logger.debug(`Prioridades localizadas: ${JSON.stringify(get_all_priority_query, null, 2)}.`);
             return get_all_priority_query;
         } catch (error) {
             logger.error(`Ocorreu um erro ao buscar ou adicionar o tronco: ${error}.`);
@@ -68,7 +69,7 @@ export class PriorityModel {
                 where: { trunk: trunk }
             });
 
-            logger.info(`Prioridades localizadas para o tronco ${trunk}: ${JSON.stringify(get_priority_by_trunk_query, null, 2)}.`);
+            logger.debug(`Prioridades localizadas para o tronco ${trunk}: ${JSON.stringify(get_priority_by_trunk_query, null, 2)}.`);
             return get_priority_by_trunk_query;
         } catch (error) {
             logger.error(`Ocorreu um erro ao buscar ou adicionar o tronco: ${error}.`);
@@ -88,7 +89,8 @@ export class PriorityModel {
                     where: { trunk: trunk }
                 });
 
-                logger.info(`Prioridade deletada com sucesso: ${JSON.stringify(delete_priority_query, null, 2)}`);
+                logger.info(`Prioridade deletada com sucesso.`);
+                logger.debug(`Prioridade deletada com sucesso: ${JSON.stringify(delete_priority_query, null, 2)}`);
                 return true;
             } else {
                 logger.info(`Prioridade não encontrada para o tronco: ${trunk}.`);

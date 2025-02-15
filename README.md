@@ -22,8 +22,21 @@ same => n,ExecIf($["${RES_PRIORITY}"=""]?Set(QUEUE_PRIO=1):Set(QUEUE_PRIO=${RES_
 ## 🚀 Instalação e Configuração
 Para replicar este código no servidor, siga os passos abaixo:
 
+Primeiramente crie a tabela que será utilizada para armazenar as prioridades que serão geradas pela API
+Acesse seu mysql e dentro do database asterisk, crie a tabela:
+```msysql
+CREATE TABLE priorities_api (
+    id           CHAR(36) NOT NULL PRIMARY KEY,  -- UUIDv7 com 36 caracteres
+    trunk        VARCHAR(255) NOT NULL UNIQUE,   -- Garante que o trunk seja único
+    priority     INT NOT NULL DEFAULT 1,         -- Valor padrão de 1 para prioridade
+    start_date   DATETIME NOT NULL,              -- Data e hora de início
+    end_date     DATETIME NULL,                  -- Data e hora de término (pode ser nula)
+    created_date DATETIME NOT NULL               -- Data e hora de criação
+);
+```
+
 ## 1️ Clone o repositório
-`git clone https://github.nome-do-repositorio.com`
+`git clone https://github.com/rafaelRizzo/api-priority-asterisk`
 
 ## 2️ Instale as dependências
 `npm install`
@@ -42,11 +55,3 @@ Os campos de data não foram configurados com CURRENT_TIMESTAMP devido à versã
 Para manter baixa latência na leitura e inserção, as operações serão executadas no mesmo servidor onde o script está rodando.
 O código será responsável por inserir manualmente as datas conforme necessário.
 
-CREATE TABLE priorities_api (
-    id           CHAR(36) NOT NULL PRIMARY KEY,  -- UUIDv7 com 36 caracteres
-    trunk        VARCHAR(255) NOT NULL UNIQUE,   -- Garante que o trunk seja único
-    priority     INT NOT NULL DEFAULT 1,         -- Valor padrão de 1 para prioridade
-    start_date   DATETIME NOT NULL,              -- Data e hora de início
-    end_date     DATETIME NULL,                  -- Data e hora de término (pode ser nula)
-    created_date DATETIME NOT NULL               -- Data e hora de criação
-);
