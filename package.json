@@ -1,0 +1,27 @@
+{
+  "name": "sofon",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.3.1",
+    "axios": "^1.7.9",
+    "bull": "^4.16.5",
+    "fastify": "^5.2.1",
+    "moment-timezone": "^0.5.47",
+    "node-cache": "^5.1.2",
+    "node-cron": "^3.0.3",
+    "uuid": "^11.0.5",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.3.1"
+  }
+}
