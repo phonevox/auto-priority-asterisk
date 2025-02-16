@@ -14,9 +14,17 @@ export const validateToken = async (request, reply) => {
         return reply.status(500).send({ message: "Token não configurado" });
     }
 
-    if (authHeader !== process.env.API_TOKEN) {
+    // Verifica se o header segue o formato Bearer <token>
+    const [bearer, token] = authHeader.split(' ');
+
+    if (bearer !== 'Bearer' || !token) {
         return reply.status(401).send({ message: "Token inválido" });
     }
 
-    logger.debug("Token válido, continunando...");
+    // Compara o token enviado com o token configurado no .env
+    if (token !== process.env.API_TOKEN) {
+        return reply.status(401).send({ message: "Token inválido" });
+    }
+
+    logger.debug("Token válido, continuando...");
 };
