@@ -45,13 +45,18 @@ export const priorityRoutes = async (fastify) => {
     });
 
     // Rota para criar listar todas as prioridades
-    fastify.get('/api/v1/priority', async (request, reply) => {
+    fastify.get('/api/v1/priority', {
+        preHandler: validateToken
+    }, async (request, reply) => {
         const priorities_data = await priorityController.getAllPriority();
 
         return reply.code(200).send({ priorities: priorities_data });
     });
 
-    fastify.get('/api/v1/priority/:trunk', { schema: priorityByTrunkSchema }, async (request, reply) => {
+    fastify.get('/api/v1/priority/:trunk', {
+        preHandler: validateToken,
+        schema: priorityByTrunkSchema
+    }, async (request, reply) => {
         const { trunk } = request.params;
 
         try {
@@ -79,7 +84,10 @@ export const priorityRoutes = async (fastify) => {
     });
 
     // Rota para deletar uma prioridade pelo nome do tronco
-    fastify.delete('/api/v1/priority/:trunk', { schema: priorityDeleteSchema }, async (request, reply) => {
+    fastify.delete('/api/v1/priority/:trunk', { 
+        preHandler: validateToken,
+        schema: priorityDeleteSchema 
+    }, async (request, reply) => {
         // Pegando os dados passados no body da requisição
         const { trunk } = request.params;
 

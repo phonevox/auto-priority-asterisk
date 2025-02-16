@@ -52,6 +52,13 @@ export class PriorityModel {
     };
 
     getAllPriority = async () => {
+        let cached_priorities = cache.get('priorities');
+
+        if (cached_priorities) {
+            logger.debug("Prioridades recuperadas do cache.");
+            return cached_priorities;
+        }
+        
         try {
             const get_all_priority_query = await prisma.priorities_api.findMany();
 

@@ -1,4 +1,6 @@
 import { TrunksController } from "../controllers/trunksControllers.js";
+import { logger } from './../utils/logger.js';
+import { validateToken } from './../middlewares/validateToken.js';
 
 const trunksController = new TrunksController();
 
@@ -9,7 +11,9 @@ const trunksController = new TrunksController();
 */
 
 export const trunksRoutes = async (fastify) => {
-    fastify.get("/api/v1/trunks", async (request, reply) => {
+    fastify.get("/api/v1/trunks",{
+        preHandler: validateToken
+    }, async (request, reply) => {
         try {
             const trunks_data_cache = await trunksController.getTrunks();
             return reply.code(200).send({ trunks: trunks_data_cache });

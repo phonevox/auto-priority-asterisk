@@ -1,4 +1,7 @@
-import { getTrunks } from "../models/trunksModels.js";
+import { TrunksModel } from "../models/trunksModels.js";
+import { logger } from './../utils/logger.js';
+
+const trunksModel = new TrunksModel();
 
 /**
  * 
@@ -9,7 +12,7 @@ import { getTrunks } from "../models/trunksModels.js";
 
 export class TrunksController {
     getTrunks = async () => {
-        const trunks_data = await getTrunks();
+        const trunks_data = await trunksModel.getAll();
         return trunks_data;
     }
 }
