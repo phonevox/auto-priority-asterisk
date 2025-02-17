@@ -1,13 +1,17 @@
 import Fastify from 'fastify';
+import cors from '@fastify/cors';
 import { trunksRoutes } from './src/routes/trunksRoutes.js';
 import { priorityRoutes } from './src/routes/priorityRoutes.js';
 import { logger } from './src/utils/logger.js';
-import { validateToken } from './src/middlewares/validateToken.js';
 
 const fastify = Fastify({ logger: true });
 
-// Usando o middleware globalmente
-// fastify.addHook('onRequest', validateToken);
+// Ativar CORS
+fastify.register(cors, {
+    origin: ['https://meusite.com', '192.1.1.1'], // Defina "*" para permitir qualquer origem ou liste domínios específicos
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Especifique os métodos HTTP permitidos,
+    allowedHeaders: ['Content-Type', 'Authorization'] // Especifica os cabeçalhos permitidos
+});
 
 // Registrar rotas 
 fastify.register(trunksRoutes);
