@@ -12,9 +12,11 @@ const priorityModel = new PriorityModel();
 
 export class PriorityController {
     addPriority = async ({ trunk, priority, start_date, end_date, created_date }) => {
-        // Formatando a data passada no body para salvar no DB
-        start_date = convertToISO(start_date);
-        end_date = convertToISO(end_date);
+        const now = new Date();
+
+        // Se não for passado start_date e end_date, definir valores padrão
+        start_date = start_date ? convertToISO(start_date) : convertToISO(now);
+        end_date = end_date ? convertToISO(end_date) : convertToISO(new Date(now.setFullYear(now.getFullYear() + 100)));
 
         // Obtendo a data atual com UTC-3 no formato ISO
         created_date = convertToISO(new Date());
