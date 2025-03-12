@@ -18,7 +18,7 @@ export const formatData = async (trunk_data) => {
         return {
             id: generateUUID(),
             trunk: trunk.channelid,
-            lasy_sync: convertToISO(new Date())
+            last_sync: convertToISO(new Date())
         };
     });
 }
